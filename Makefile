@@ -2,6 +2,8 @@ CC=c99
 OPTS=-Wall
 LDFLAGS=-lm
 
+all: fftstream dftstream ftest
+
 fftstream: fftstream.c fourier.o
 	$(CC) $(OPTS) fourier.o fftstream.c $(LDFLAGS) -o fftstream
 
