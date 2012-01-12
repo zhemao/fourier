@@ -1,0 +1,17 @@
+Fourier Transforms
+=====================
+
+This repo contains an implementation of the discrete fourier transform, and a
+fast fourier transform implementation using the Cooley-Tukey algorithm.
+
+The two functions in fourier.h are
+
+void dft(double complex * fdom, double complex * tdom, int n, int s);
+void fft(double complex * fdom, double complex * tdom, int n, int s);
+
+Each function calculates the transform for the time domain tdom and places
+the results in the complex double array fdom. The integer n is the size of the
+array. The integer s is the stride of the array, which is used in the 
+recursive part of the fft. If you are calling this, you should set s to 1. 
+For accurate results for the fft, it is best to use an input array with a size 
+that is a power of 2.
