@@ -6,8 +6,8 @@ fast fourier transform implementation using the Cooley-Tukey algorithm.
 
 The two functions in fourier.h are
 
-void dft(double complex * fdom, double complex * tdom, int n, int s);
-void fft(double complex * fdom, double complex * tdom, int n, int s);
+	void dft(double complex * fdom, double complex * tdom, int n, int s);
+	void fft(double complex * fdom, double complex * tdom, int n, int s);
 
 Each function calculates the transform for the time domain tdom and places
 the results in the complex double array fdom. The integer n is the size of the
