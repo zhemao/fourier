@@ -15,3 +15,18 @@ array. The integer s is the stride of the array, which is used in the
 recursive part of the fft. If you are calling this, you should set s to 1. 
 For accurate results for the fft, it is best to use an input array with a size 
 that is a power of 2.
+
+Benchmarking
+==============
+
+The two programs dftstream and fftstream read time-domain samples in from 
+standard input and output the transform to standard output. They each take 
+one argument, which is the size of the input array. The dftstream program
+uses the dft function and fftstream uses the fft function. You can compare 
+the performance of each like so.
+
+	time ./fftstream 1024 < ./sinwave.dat > /dev/null
+	time ./dftstream 1024 < ./sinwave.dat > /dev/null
+
+You will see that the fftstream program is significantly faster.
+
