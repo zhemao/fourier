@@ -17,18 +17,20 @@ void dft(double complex * fdom, double complex * tdom, int n, int s){
 }
 
 void fft(double complex * fdom, double complex * tdom, int n, int s){
-	if(n == 1){
+	if(n <= 5){
 		dft(fdom, tdom, n, s);
 	} else {
-		int i, hn = n/2, temp;
+		int i, hn = n/2;
+		double complex efdom[hn], ofdom[hn];
 
-		fft(fdom, tdom, hn, 2 * s);
-		fft(fdom + hn, tdom + s, hn, 2 * s);
+		fft(efdom, tdom, hn, 2 * s);
+		fft(ofdom, tdom + s, hn, 2 * s);
 
 		for(i=0; i<hn; i++){
-			temp = fdom[i];
-			fdom[i] = temp + cexp(EXPCONST * i / n) * fdom[i+hn];
-			fdom[i+hn] = temp - cexp(EXPCONST * i /n) * fdom[i+hn];
+			fdom[i] = efdom[i] + cexp(EXPCONST * i / n) * ofdom[i];
+			fdom[i+hn] = efdom[i] - cexp(EXPCONST * i /n) * ofdom[i];
 		}
+
+		if(2*hn < n) fdom[2*hn] = efdom[0] + ofdom[0];
 	}
 }
