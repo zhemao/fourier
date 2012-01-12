@@ -4,12 +4,9 @@
 
 void filltdom(double complex * tdom, int n){
 	int i; 
-	double t;
 
 	for(i=0; i<n; i++){
-		t = 20.0 / n - 10.0;
-		if(t == 0) tdom[i] = 1;
-		else tdom[i] = sin(t)/t;
+		tdom[i] = cos(i) + cos(2*i);
 	}
 }
 
@@ -22,7 +19,7 @@ void ar_difference(double complex * diff,
 }
 
 int main(void){
-	int n = 1000;
+	int n = 1024;
 	double complex tdom[n], dfdom[n], ffdom[n], error[n];
 	int i;
 
@@ -34,7 +31,7 @@ int main(void){
 	ar_difference(error, dfdom, ffdom, n);
 
 	for(i=0; i<n; i++){
-		printf("%f\t%f\t%f\n", cabs(tdom[i]), cabs(dfdom[i]), cabs(ffdom[i]));
+		printf("%f\t%f\n", cabs(dfdom[i]), cabs(ffdom[i]));
 	}
 
 	return 0;
