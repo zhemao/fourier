@@ -16,8 +16,8 @@ int main(void){
 
 	filltdom(tdom, n);
 	
-	dft(dfdom, tdom, n);
-	fft(ffdom, tdom, n);
+	dft(dfdom, tdom, n, 1);
+	fft(ffdom, tdom, n, 1);
 
 	for(i=0; i<n; i++){
 		printf("%f\t%f\t%f\n", cabs(tdom[i]), cabs(dfdom[i]) , cabs(ffdom[i]));
