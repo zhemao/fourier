@@ -8,3 +8,4 @@
 
 void dft(double complex * fdom, double complex * tdom, int n, int s);
 void fft(double complex * fdom, double complex * tdom, int n, int s);
+void ifft(double complex * tdom, double complex * fdom, int n);

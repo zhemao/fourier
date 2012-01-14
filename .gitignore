@@ -1,5 +1,4 @@
 *.o
 *.swp
-ftest
-fftstream
-dftstream
+*test
+*stream

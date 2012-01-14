@@ -34,3 +34,18 @@ void fft(double complex * fdom, double complex * tdom, int n, int s){
 		if(2*hn < n) fdom[2*hn] = efdom[0] + ofdom[0];
 	}
 }
+
+void ifft(double complex * tdom, double complex * fdom, int n){
+	double complex fconj[n];
+	int i;
+
+	for(i=0; i<n; i++){
+		fconj[i] = conj(fdom[i]);
+	}
+
+	fft(tdom, fconj, n, 1);
+
+	for(i=0; i<n; i++){
+		tdom[i] = conj(tdom[i])/n;
+	}
+}
