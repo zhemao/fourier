@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fftw3.h>
+#include <math.h>
 
 int main(int argc, char *argv[]){
 	if(argc < 2){
@@ -28,7 +29,8 @@ int main(int argc, char *argv[]){
 	fftw_execute(p);
 
 	for(i=0; i<n; i++){
-		printf("%f\n", out[i][0]);
+		x = sqrt(out[i][0] * out[i][0] + out[i][1] * out[i][1]);
+		printf("%f\n", x);
 	}
 
 	fftw_destroy_plan(p);
