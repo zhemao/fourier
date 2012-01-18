@@ -20,17 +20,15 @@ static void fft_r(double complex * fdom, double complex * tdom, int n, int s){
 		fdom[0] = tdom[0];
 	} else {
 		int i, hn = n/2;
-		double complex efdom[n-hn], ofdom[hn];
+		double complex efdom[hn], ofdom[hn];
 
-		fft_r(efdom, tdom, n-hn, 2 * s);
+		fft_r(efdom, tdom, hn, 2 * s);
 		fft_r(ofdom, tdom + s, hn, 2 * s);
 
 		for(i=0; i<hn; i++){
 			fdom[i] = efdom[i] + cexp(EXPCONST * i / n) * ofdom[i];
 			fdom[i+hn] = efdom[i] - cexp(EXPCONST * i /n) * ofdom[i];
 		}
-
-		if(2*hn < n) fdom[2*hn] = efdom[0] + ofdom[0];
 	}
 }
 
