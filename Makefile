@@ -1,20 +1,22 @@
 CC=c99
 OPTS=-Wall
-LDFLAGS=-lm
 
-all: fftstream dftstream ftest iftest
+all: fftstream dftstream ftest iftest fftwstream
+
+fftwstream: fftwstream.c
+	$(CC) $(OPTS) fftwstream.c -lm -lfftw3 -o fftwstream
 
 fftstream: fftstream.c fourier.o
-	$(CC) $(OPTS) fourier.o fftstream.c $(LDFLAGS) -o fftstream
+	$(CC) $(OPTS) fourier.o fftstream.c -lm -o fftstream
 
 dftstream: dftstream.c fourier.o
-	$(CC) $(OPTS) fourier.o dftstream.c $(LDFLAGS) -o dftstream
+	$(CC) $(OPTS) fourier.o dftstream.c -lm -o dftstream
 
 ftest: ftest.c fourier.o
-	$(CC) $(OPTS) fourier.o ftest.c $(LDFLAGS) -o ftest
+	$(CC) $(OPTS) fourier.o ftest.c -lm -o ftest
 
 iftest: iftest.c fourier.o
-	$(CC) $(OPTS) fourier.o iftest.c $(LDFLAGS) -o iftest
+	$(CC) $(OPTS) fourier.o iftest.c -lm -o iftest
 
 fourier.o: fourier.h fourier.c
 	$(CC) $(OPTS) -c fourier.c 
