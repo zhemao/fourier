@@ -27,3 +27,6 @@ the performance of each like so.
 
 You will see that the fftstream program is significantly faster.
 
+I have also provided the fftwstream program, which has the same interface as
+the previous two executables, but uses the fftw library instead of mine to
+carry out the transform.
