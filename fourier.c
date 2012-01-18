@@ -21,9 +21,9 @@ void fft(double complex * fdom, double complex * tdom, int n, int s){
 		dft(fdom, tdom, n, s);
 	} else {
 		int i, hn = n/2;
-		double complex efdom[hn], ofdom[hn];
+		double complex efdom[n-hn], ofdom[hn];
 
-		fft(efdom, tdom, hn, 2 * s);
+		fft(efdom, tdom, n-hn, 2 * s);
 		fft(ofdom, tdom + s, hn, 2 * s);
 
 		for(i=0; i<hn; i++){
