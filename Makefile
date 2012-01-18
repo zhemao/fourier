@@ -1,7 +1,11 @@
 CC=c99
 OPTS=-Wall
+PYTHON=python
 
-all: fftstream dftstream ftest iftest fftwstream
+all: fftstream dftstream ftest iftest fftwstream sinwave.dat
+
+sinwave.dat: gensinwave.py
+	$(PYTHON) gensinwave.py 65536 > sinwave.dat
 
 fftwstream: fftwstream.c
 	$(CC) $(OPTS) fftwstream.c -lm -lfftw3 -o fftwstream
