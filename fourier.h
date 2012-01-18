@@ -9,3 +9,5 @@
 void dft(double complex * fdom, double complex * tdom, int n);
 void fft(double complex * fdom, double complex * tdom, int n);
 void ifft(double complex * tdom, double complex * fdom, int n);
+void convolve(double complex * r, double complex * a, 
+              double complex * b, int n);

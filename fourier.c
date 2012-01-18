@@ -53,10 +53,8 @@ void ifft(double complex * tdom, double complex * fdom, int n){
 	}
 }
 
-void convolve(double complex * r, 
-              double complex * a, 
-			  double complex * b,
-			  int n){
+void convolve(double complex * r, double complex * a, 
+              double complex *b, int n){
 	
 	double complex A[n], B[n], R[n];
 	int i;
