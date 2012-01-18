@@ -22,8 +22,8 @@ one argument, which is the size of the input array. The dftstream program
 uses the dft function and fftstream uses the fft function. You can compare 
 the performance of each like so.
 
-	time ./fftstream 1024 < ./sinwave.dat > /dev/null
-	time ./dftstream 1024 < ./sinwave.dat > /dev/null
+	time ./fftstream 65536 < ./sinwave.dat > /dev/null
+	time ./dftstream 65536 < ./sinwave.dat > /dev/null
 
 You will see that the fftstream program is significantly faster.
 
