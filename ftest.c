@@ -25,8 +25,8 @@ int main(void){
 
 	filltdom(tdom, n);
 	
-	dft(dfdom, tdom, n, 1);
-	fft(ffdom, tdom, n, 1);
+	dft(dfdom, tdom, n);
+	fft(ffdom, tdom, n);
 
 	ar_difference(error, dfdom, ffdom, n);
 

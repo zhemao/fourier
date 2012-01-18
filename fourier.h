@@ -6,6 +6,6 @@
 
 #define EXPCONST -2 * M_PI * I
 
-void dft(double complex * fdom, double complex * tdom, int n, int s);
-void fft(double complex * fdom, double complex * tdom, int n, int s);
+void dft(double complex * fdom, double complex * tdom, int n);
+void fft(double complex * fdom, double complex * tdom, int n);
 void ifft(double complex * tdom, double complex * fdom, int n);

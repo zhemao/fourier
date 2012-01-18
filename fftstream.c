@@ -18,7 +18,7 @@ int main(int argc, char *argv[]){
 		i++;
 	}
 
-	fft(fdom, tdom, n, 1);
+	fft(fdom, tdom, n);
 
 	for(i=0; i<n; i++){
 		printf("%f\n", cabs(fdom[i]));
