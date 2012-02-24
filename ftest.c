@@ -6,7 +6,7 @@ void filltdom(double complex * tdom, int n){
 	int i; 
 
 	for(i=0; i<n; i++){
-		tdom[i] = cos(i) + cos(2*i);
+		tdom[i] = cos(i);
 	}
 }
 
