@@ -4,6 +4,7 @@
 #ifdef FFT_PTHREAD
 #include <pthread.h>
 #include <unistd.h>
+#include <stdio.h>
 
 struct fft_thread {
 	pthread_t thread;
@@ -53,7 +54,7 @@ static void* fft_par(void *data)
 {
 	struct fft_thread *oldthread;
 	struct fft_thread newthread;
-	int i, n, hn, s, nthreads;
+	int i, n, hn, s, nthreads, retval;
 	double complex *fdom;
 
 	oldthread = (struct fft_thread *) data;
@@ -85,11 +86,19 @@ static void* fft_par(void *data)
 	oldthread->s = 2 * s;
 	oldthread->nthreads = nthreads / 2;
 
-	pthread_create(&newthread.thread, NULL, fft_par, (void*) &newthread);
-	fft_par((void*) oldthread);
-	
-	pthread_join(newthread.thread, NULL);
+	retval = pthread_create(&newthread.thread, NULL, 
+				fft_par, (void*) &newthread);
 
+	fft_par((void*) oldthread);
+
+	if (retval == 0)
+		retval = pthread_join(newthread.thread, NULL);
+	
+	if (retval != 0)
+		/* if pthread_create or pthread_join exited unsuccessfully,
+		 * just do the second half sequentially */
+		fft_par((void*) &newthread);
+	
 	for (i = 0; i < hn; i++) {
 		double complex odd = fdom[i+hn];
 		fdom[i+hn] = fdom[i] - cexp(EXPCONST * i / n) * odd;
@@ -108,7 +117,7 @@ inline void fft(double complex *fdom, double complex *tdom, int n)
 	thread.n = n;
 	thread.s = 1;
 	thread.nthreads = sysconf(_SC_NPROCESSORS_ONLN);
-
+	
 	fft_par((void*) &thread);
 }
 
