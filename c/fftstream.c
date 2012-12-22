@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char *argv[]){
-	if(argc < 2){
+int main(int argc, char *argv[])
+{
+	if (argc < 2) {
 		printf("Must specify size of input array\n");
 		exit(EXIT_FAILURE);
 	}
@@ -13,14 +14,14 @@ int main(int argc, char *argv[]){
 	double x;
 	double complex tdom[n], fdom[n];
 
-	while(i<n && scanf("%lf", &x) > 0){
+	while (i<n && scanf("%lf", &x) > 0) {
 		tdom[i] = x;
 		i++;
 	}
 
 	fft(fdom, tdom, n);
 
-	for(i=0; i<n; i++){
+	for (i=0; i<n; i++) {
 		printf("%f\n", cabs(fdom[i]));
 	}
 

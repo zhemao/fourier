@@ -3,8 +3,9 @@
 #include <fftw3.h>
 #include <math.h>
 
-int main(int argc, char *argv[]){
-	if(argc < 2){
+int main(int argc, char *argv[])
+{
+	if (argc < 2) {
 		printf("Must specify size of input array\n");
 		exit(EXIT_FAILURE);
 	}
@@ -18,7 +19,7 @@ int main(int argc, char *argv[]){
 	in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * n);
 	out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * n);
 
-	while(i<n && scanf("%lf", &x) > 0){
+	while (i<n && scanf("%lf", &x) > 0) {
 		in[i][0] = x;
 		in[i][1] = 0;
 		i++;
@@ -28,7 +29,7 @@ int main(int argc, char *argv[]){
 
 	fftw_execute(p);
 
-	for(i=0; i<n; i++){
+	for (i=0; i<n; i++) {
 		x = sqrt(out[i][0] * out[i][0] + out[i][1] * out[i][1]);
 		printf("%f\n", x);
 	}
