@@ -1,5 +1,6 @@
 #include "fourier.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 
 void filltdom(double complex * tdom, int n)
@@ -20,18 +21,22 @@ void ar_difference(double complex *diff,
 	}
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
-	int n = 1024;
-	double complex tdom[n], dfdom[n], ffdom[n], error[n];
+	int n;
 	int i;
 
+	if (argc > 1)
+		n = atoi(argv[1]);
+	else
+		n = 1024;
+
+	double complex tdom[n], dfdom[n], ffdom[n]; 
+	
 	filltdom(tdom, n);
 	
 	dft(dfdom, tdom, n);
 	fft(ffdom, tdom, n);
-
-	ar_difference(error, dfdom, ffdom, n);
 
 	for(i = 0; i < n; i++){
 		printf("%f\t%f\n", cabs(dfdom[i]), cabs(ffdom[i]));
