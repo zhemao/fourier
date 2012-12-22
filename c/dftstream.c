@@ -14,14 +14,14 @@ int main(int argc, char *argv[])
 	double x;
 	double complex tdom[n], fdom[n];
 
-	while (i<n && scanf("%lf", &x) > 0) {
+	while (i < n && scanf("%lf", &x) > 0) {
 		tdom[i] = x;
 		i++;
 	}
 
 	dft(fdom, tdom, n);
 
-	for (i=0; i<n; i++) {
+	for (i = 0; i < n; i++) {
 		printf("%f\n", cabs(fdom[i]));
 	}
 
