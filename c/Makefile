@@ -1,6 +1,5 @@
 CC=c99
 OPTS=-Wall
-N=65536
 ALL=fftstream dftstream ftest iftest fftwstream
 
 all: $(ALL)
