@@ -1,5 +1,5 @@
-CC=c99
-CFLAGS=-Wall
+CC=gcc
+CFLAGS=-Wall -g
 ALL=fftstream dftstream ftest iftest fftwstream
 
 all: $(ALL)
