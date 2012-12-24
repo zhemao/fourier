@@ -14,10 +14,6 @@ struct fft_data {
 	int nthreads;
 };
 
-#elif FFT_MPI
-
-#include <mpi.h>
-
 #endif
 
 void dft(double complex *fdom, double complex *tdom, int n)
