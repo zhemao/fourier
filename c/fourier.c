@@ -33,9 +33,21 @@ void dft(double complex *fdom, double complex *tdom, int n)
 	}
 }
 
+static inline void fft_merge(double complex *fdom, int n)
+{
+	int i, hn = n / 2;
+	double complex odd;
+
+	for (i = 0; i < hn; i++) {
+		odd = fdom[i + hn];
+		fdom[i+hn] = fdom[i] - cexp(EXPCONST * i /n) * odd;
+		fdom[i] = fdom[i] + cexp(EXPCONST * i / n) * odd;
+	}
+}
+
 static void fft_r(double complex *fdom, double complex *tdom, int n, int s)
 {
-	int i, hn = n/2;
+	int hn = n/2;
 	
 	if (n == 1) {
 		fdom[0] = tdom[0];
@@ -63,11 +75,7 @@ static void fft_r(double complex *fdom, double complex *tdom, int n, int s)
 	fft_r(fdom, tdom, hn, 2 * s);
 	fft_r(fdom+hn, tdom + s, hn, 2 * s);
 
-	for (i = 0; i < hn; i++) {
-		double complex odd = fdom[i+hn];
-		fdom[i+hn] = fdom[i] - cexp(EXPCONST * i /n) * odd;
-		fdom[i] = fdom[i] + cexp(EXPCONST * i / n) * odd;
-	}
+	fft_merge(fdom, n);
 #endif
 }
 
@@ -99,7 +107,7 @@ static void* fft_par(void *data)
 {
 	struct fft_data *olddata;
 	struct fft_data newdata;
-	int i, n, hn, s, nthreads, retval;
+	int n, hn, s, nthreads, retval;
 	double complex *fdom;
 	pthread_t thread;
 
@@ -144,12 +152,8 @@ static void* fft_par(void *data)
 		 * just do the second half sequentially */
 		fft_par((void*) &newdata);
 	
-	for (i = 0; i < hn; i++) {
-		double complex odd = fdom[i+hn];
-		fdom[i+hn] = fdom[i] - cexp(EXPCONST * i / n) * odd;
-		fdom[i] = fdom[i] + cexp(EXPCONST * i / n) * odd;
-	}
-
+	fft_merge(fdom, n);
+	
 	return NULL;
 }
 
