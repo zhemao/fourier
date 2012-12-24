@@ -41,7 +41,25 @@ static void fft_r(double complex *fdom, double complex *tdom, int n, int s)
 		fdom[0] = tdom[0];
 		return;
 	}
-	
+#ifdef FFT_OPENMP
+	#pragma omp parallel
+	{
+		#pragma omp sections
+		{
+			#pragma omp section
+			fft_r(fdom, tdom, hn, 2 * s);
+			#pragma omp section
+			fft_r(fdom + hn, tdom + s, hn, 2 * s);
+		}
+		
+		#pragma omp for
+		for (i = 0; i < hn; i++) {
+			double complex odd = fdom[i+hn];
+			fdom[i+hn] = fdom[i] - cexp(EXPCONST * i /n) * odd;
+			fdom[i] = fdom[i] + cexp(EXPCONST * i / n) * odd;
+		}
+	}
+#else
 	fft_r(fdom, tdom, hn, 2 * s);
 	fft_r(fdom+hn, tdom + s, hn, 2 * s);
 
@@ -50,6 +68,7 @@ static void fft_r(double complex *fdom, double complex *tdom, int n, int s)
 		fdom[i+hn] = fdom[i] - cexp(EXPCONST * i /n) * odd;
 		fdom[i] = fdom[i] + cexp(EXPCONST * i / n) * odd;
 	}
+#endif
 }
 
 #ifdef FFT_PTHREAD
