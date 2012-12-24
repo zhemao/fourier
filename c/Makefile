@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -g
+CFLAGS=-Wall -g -DFFT_PTHREAD -pthread
 ALL=fftstream dftstream ftest iftest fftwstream
 
 all: $(ALL)
