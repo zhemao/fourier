@@ -14,6 +14,10 @@ struct fft_data {
 	int nthreads;
 };
 
+#elif FFT_MPI
+
+#include <mpi.h>
+
 #endif
 
 void dft(double complex *fdom, double complex *tdom, int n)
@@ -31,19 +35,20 @@ void dft(double complex *fdom, double complex *tdom, int n)
 
 static void fft_r(double complex *fdom, double complex *tdom, int n, int s)
 {
+	int i, hn = n/2;
+	
 	if (n == 1) {
 		fdom[0] = tdom[0];
-	} else {
-		int i, hn = n/2;
+		return;
+	}
+	
+	fft_r(fdom, tdom, hn, 2 * s);
+	fft_r(fdom+hn, tdom + s, hn, 2 * s);
 
-		fft_r(fdom, tdom, hn, 2 * s);
-		fft_r(fdom+hn, tdom + s, hn, 2 * s);
-
-		for (i = 0; i < hn; i++) {
-			double complex odd = fdom[i+hn];
-			fdom[i+hn] = fdom[i] - cexp(EXPCONST * i /n) * odd;
-			fdom[i] = fdom[i] + cexp(EXPCONST * i / n) * odd;
-		}
+	for (i = 0; i < hn; i++) {
+		double complex odd = fdom[i+hn];
+		fdom[i+hn] = fdom[i] - cexp(EXPCONST * i /n) * odd;
+		fdom[i] = fdom[i] + cexp(EXPCONST * i / n) * odd;
 	}
 }
 
