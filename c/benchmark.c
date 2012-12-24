@@ -12,15 +12,6 @@ void filltdom(double complex * tdom, int n)
 	}
 }
 
-void ar_difference(double complex *diff, 
-		   double complex *ara, double complex *arb, int n)
-{
-	int i;
-	for(i = 0; i < n; i++){
-		diff[i] = ara[i] - arb[i];
-	}
-}
-
 int main(int argc, char *argv[])
 {
 	int i, size, times;
