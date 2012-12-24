@@ -1,5 +1,9 @@
 *.o
-*.swp
-*test
 *.dat
-*stream
+*.swp
+/c/ftest
+/c/iftest
+/c/fftstream
+/c/dftstream
+/c/fftwstream
+/c/benchmark

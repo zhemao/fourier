@@ -1,8 +1,11 @@
 CC=gcc
 CFLAGS=-Wall -g -DFFT_PTHREAD -pthread
-ALL=fftstream dftstream ftest iftest fftwstream
+ALL=fftstream dftstream ftest iftest fftwstream benchmark
 
 all: $(ALL)
+
+benchmark: benchmark.c fourier.o
+	$(CC) $(CFLAGS) $(LDFLAGS) fourier.o benchmark.c -lm -o benchmark
 
 fftwstream: fftwstream.c
 	$(CC) $(CFLAGS) $(LDFLAGS) fftwstream.c -lm -lfftw3 -o fftwstream

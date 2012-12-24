@@ -21,19 +21,20 @@ void ar_difference(double complex *diff,
 	}
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
-	int i, n = 1024;
-	double complex tdom[n], dfdom[n], ffdom[n]; 
+	int n;
+
+	if (argc > 1)
+		n = atoi(argv[1]);
+	else
+		n = 1024;
+
+	double complex tdom[n], fdom[n];
 	
 	filltdom(tdom, n);
 	
-	dft(dfdom, tdom, n);
-	fft(ffdom, tdom, n);
-
-	for(i = 0; i < n; i++){
-		printf("%f\t%f\n", cabs(dfdom[i]), cabs(ffdom[i]));
-	}
+	fft(fdom, tdom, n);
 
 	return 0;
 }
