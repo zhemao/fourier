@@ -49,6 +49,28 @@ static void fft_r(double complex *fdom, double complex *tdom, int n, int s)
 
 #ifdef FFT_PTHREAD
 
+static void* fft_par(void *data);
+
+static int fft_create_thread(pthread_t *thread, struct fft_data *data)
+{
+	pthread_attr_t attr;
+	int rc;
+
+	rc = pthread_attr_init(&attr);
+
+	if (rc < 0)
+		return -1;
+	
+	rc = pthread_create(thread, &attr, fft_par, (void*) data);
+
+	pthread_attr_destroy(&attr);
+
+	if (rc < 0)
+		return -1;
+
+	return 0;
+}
+
 static void* fft_par(void *data)
 {
 	struct fft_data *olddata;
@@ -86,8 +108,7 @@ static void* fft_par(void *data)
 	olddata->s = 2 * s;
 	olddata->nthreads = nthreads / 2;
 
-	retval = pthread_create(&thread, NULL, 
-				fft_par, (void*) &newdata);
+	retval = fft_create_thread(&thread, &newdata);
 
 	fft_par((void*) olddata);
 
