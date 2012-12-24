@@ -6,8 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-struct fft_thread {
-	pthread_t thread;
+struct fft_data {
 	double complex *fdom;
 	double complex *tdom;
 	int n;
@@ -52,52 +51,53 @@ static void fft_r(double complex *fdom, double complex *tdom, int n, int s)
 
 static void* fft_par(void *data)
 {
-	struct fft_thread *oldthread;
-	struct fft_thread newthread;
+	struct fft_data *olddata;
+	struct fft_data newdata;
 	int i, n, hn, s, nthreads, retval;
 	double complex *fdom;
+	pthread_t thread;
 
-	oldthread = (struct fft_thread *) data;
+	olddata = (struct fft_data *) data;
 	
-	nthreads = oldthread->nthreads;
-	n = oldthread->n;
-	hn = oldthread->n / 2;
-	s = oldthread->s;
-	fdom = oldthread->fdom;
+	nthreads = olddata->nthreads;
+	n = olddata->n;
+	hn = olddata->n / 2;
+	s = olddata->s;
+	fdom = olddata->fdom;
 
 	if (n == 1) {
-		fdom[0] = oldthread->tdom[0];
+		fdom[0] = olddata->tdom[0];
 		return NULL;
 	}
 
 	if (nthreads == 1) {
-		fft_r(oldthread->fdom, oldthread->tdom, n, s);
+		fft_r(olddata->fdom, olddata->tdom, n, s);
 		return NULL;
 	}
 
 	
-	newthread.fdom = oldthread->fdom + hn;
-	newthread.tdom = oldthread->tdom + s;
-	newthread.n = hn;
-	newthread.s = 2 * s;
-	newthread.nthreads = nthreads / 2;
+	newdata.fdom = olddata->fdom + hn;
+	newdata.tdom = olddata->tdom + s;
+	newdata.n = hn;
+	newdata.s = 2 * s;
+	newdata.nthreads = nthreads / 2;
 
-	oldthread->n = hn;
-	oldthread->s = 2 * s;
-	oldthread->nthreads = nthreads / 2;
+	olddata->n = hn;
+	olddata->s = 2 * s;
+	olddata->nthreads = nthreads / 2;
 
-	retval = pthread_create(&newthread.thread, NULL, 
-				fft_par, (void*) &newthread);
+	retval = pthread_create(&thread, NULL, 
+				fft_par, (void*) &newdata);
 
-	fft_par((void*) oldthread);
+	fft_par((void*) olddata);
 
 	if (retval == 0)
-		retval = pthread_join(newthread.thread, NULL);
+		retval = pthread_join(thread, NULL);
 	
 	if (retval != 0)
 		/* if pthread_create or pthread_join exited unsuccessfully,
 		 * just do the second half sequentially */
-		fft_par((void*) &newthread);
+		fft_par((void*) &newdata);
 	
 	for (i = 0; i < hn; i++) {
 		double complex odd = fdom[i+hn];
@@ -110,15 +110,15 @@ static void* fft_par(void *data)
 
 inline void fft(double complex *fdom, double complex *tdom, int n)
 {
-	struct fft_thread thread;
+	struct fft_data data;
 	
-	thread.fdom = fdom;
-	thread.tdom = tdom;
-	thread.n = n;
-	thread.s = 1;
-	thread.nthreads = sysconf(_SC_NPROCESSORS_ONLN);
+	data.fdom = fdom;
+	data.tdom = tdom;
+	data.n = n;
+	data.s = 1;
+	data.nthreads = sysconf(_SC_NPROCESSORS_ONLN);
 	
-	fft_par((void*) &thread);
+	fft_par((void*) &data);
 }
 
 #else
