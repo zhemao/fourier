@@ -23,18 +23,24 @@ void ar_difference(double complex *diff,
 
 int main(int argc, char *argv[])
 {
-	int n;
+	int i, size, times;
 
 	if (argc > 1)
-		n = atoi(argv[1]);
+		size = atoi(argv[1]);
 	else
-		n = 1024;
+		size = 1024;
+	
+	if (argc > 2)
+		times = atoi(argv[2]);
+	else
+		times = 1;
 
-	double complex tdom[n], fdom[n];
+	double complex tdom[size], fdom[size];
 	
-	filltdom(tdom, n);
+	filltdom(tdom, size);
 	
-	fft(fdom, tdom, n);
+	for (i = 0; i < times; i++)
+		fft(fdom, tdom, size);
 
 	return 0;
 }
